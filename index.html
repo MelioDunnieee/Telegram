@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SGR | Manager</title>
+    <style>
+        body {
+            background-color: #f2f2f2;
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+        h1 {
+            color: #333;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            width: 300px;
+        }
+        input, button {
+            margin: 10px 0;
+            padding: 10px;
+            font-size: 16px;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .message {
+            margin-top: 20px;
+            font-size: 18px;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <h1>SGR | Manager</h1>
+    <form id="messageForm">
+        <input type="text" id="message" placeholder="Type your message here" required>
+        <button type="submit">Send Message</button>
+    </form>
+    <div class="message" id="responseMessage"></div>
+
+    <script>
+        document.getElementById('messageForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent the form from submitting the traditional way
+            
+            const message = document.getElementById('message').value;
+            const chatId = '-4561642108'; // Replace with your chat ID
+            const token = '7685631891:AAHRRlIhnmP4llJr2FbFrzayim3UppCL9n8'; // Your bot token
+
+            const url = `https://api.telegram.org/bot${token}/sendMessage`;
+
+            // Prepare the data to be sent
+            const data = {
+                chat_id: chatId,
+                text: message
+            };
+
+            // Send the message using fetch
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                // Display a success message
+                document.getElementById('responseMessage').textContent = 'Message sent successfully!';
+            })
+            .catch((error) => {
+                // Display an error message
+                document.getElementById('responseMessage').textContent = 'Failed to send message: ' + error.message;
+            });
+        });
+    </script>
+</body>
+</html>
